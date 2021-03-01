@@ -1,7 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,7 +14,14 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware (['auth.test'],['except' => 'login'])->prefix ('v1')->group (function (){
+   Route::get ('/project',[ProjectController::class,'index']);
+   Route::post('/out',[LoginController::class,'out'])->name ('out');
 });
+
+
+Route::middleware ([])->prefix ('v1')->group (function (){
+    Route::post('/login',[LoginController::class,'login'])->name ('login');
+});
+
+
